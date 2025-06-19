@@ -1,0 +1,39 @@
+step1 :
+    Create SecurityConfig.java
+        annotate @Configuration @EnableWebSecurity
+        and create a SecurityFilterChain Bean and PasswordEncoder Bean and CorsFiler Bean
+
+step2 :
+    now create a service (AppUserDetailsService.java) which implements UserDetailService and overrides the loadUserByUsername method
+
+step3 :
+    inside SecurityConfig.java we have to create a new Bean for AuthenticationManager
+
+step4 :
+    create controller (AuthController.java) and inside we need to authenticate the email and password took from user
+    (so create AuthRequest.java and here take email and password (as POJO))
+    Generate the JWT token (inject the UserDetailsService)
+    we need to pass the userDetails obj to create jwt token. so create util class
+        create util pkg under this create JwtUtil.java
+        and create generateToken(UserDetails userDetails) method and write the secret key inside the class
+        Make sure to add the jwt dependency and in controller set/add the jwtToken to cookie
+        after add the context-path in application.properties file (now all of our endpoints will depend on this path)
+
+step5 :
+    after testing this /login endpoint (we will get the token and the token is added into the cookie)
+    so, now inorder to validate the token (present in cookie) we need to create a Filter
+    create filter pkg under create custom filter (JwtRequestFilter.java) where this extends OncePerRequestFilter (this is an abstract class)
+    so it has doFilterInternal(request, response, filterChain) method. since this custom filter class needs to implement this method
+
+step6 :
+    now inside JwtUtil.java create extractAllClaims(), extractClaim(), extractEmail(), extractExpiration(), isTokenExpired(), validateToken()
+
+step7 :
+    inside JwtRequestFilter, follow these steps :
+        1. check the authorization header
+        2. If not found in header, check cookies
+        3. validate the token and set security context
+    and later we have to register filter in SecurityConfig.java under this method SecurityFilterChain
+
+created CustomAuthenticationEntryPoint.java class under config and setting the response (which is a Global Exception Handler)
+and we need to register SecurityConfig.java under this method SecurityFilterChain

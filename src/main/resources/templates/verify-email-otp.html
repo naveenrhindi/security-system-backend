@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Account Verification</title>
+    </head>
+    <body style="font-family: Arial, sans-serif;">
+        <h2>Hi <span th:text="${name}">User</span>,</h2>
+        <p>Your OTP for account verification is:</p>
+        <h1 style="color: #3498db;" th:text="${otp}">654321</h1>
+        <p>Please use this OTP to verify your account.</p>
+        <br/>
+        <p>Thank you,</p>
+        <p><strong>Secured System By Naveen</strong></p>
+    </body>
+</html>

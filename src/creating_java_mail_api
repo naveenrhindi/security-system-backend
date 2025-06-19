@@ -1,0 +1,40 @@
+1. Tool (Gmail) using to send the email messages
+    - add the Java Mail Sender dependency into pom.xml
+    - you need to visit this : https://myaccount.google.com and Enable 2-Step Verification
+    - after Generate App Password, go to : https://myaccount.google.com/apppasswords , authenticate yourself, provide name, and Copy the 16-character password
+    - we will use this in our application.properties file
+    - after configure these in application.properties file :
+        spring.mail.host = smtp.gmail.com
+        spring.mail.port = 587
+        spring.mail.username = app-pass-generated-gmail-account
+        spring.mail.password = xxxx xxxx xxxx xxxx
+        spring.mail.properties.mail.smtp.auth = true
+        spring.mail.properties.mail.smtp.starttls.enable = true
+        spring.mail.protocol = smtp
+        spring.mail.properties.mail.smtp.from = app-pass-generated-gmail-account
+
+step2 :
+    - create EmailService.java under service pkg
+    - create sendWelcomeEmail(String toEmail, String name) method
+    - next call this method in ProfileController and DONE.
+
+- created one more endpoint - /is-authenticated (checks the email and returns True/False)
+
+To Reset the Password :
+    - create this method : void sendResetOtp(String email); in ProfileService.java and override
+        - verifies the user by email and generates 6 digit otp and set the expiry time and save it to db
+    - need to create one more method in EmailService service to send the reset otp email
+        - public void sendResetOtpEmail(String toEmail, String otp) now call this in our ProfileServiceImpl class
+    - now we have to create a method (resetPassword) in ProfileService
+        - void resetPassword(String email, String otp, String newPassword) override and write logic
+        - create Request class (ResetPasswordRequest.java) with the above 3 fields
+        - now inside AuthController create new api ("/reset-password")
+
+OTP to verify Account
+    created sendOtp(String email) , verifyOtp(String email, String otp) and getLoggedInUserId(String email)
+    overridden these in implementation class and created this ("/send-otp") endpoint in the AuthController
+    this api (/send-otp) creates otp and emails it to registered user (Saying Verify your account with this OTP)
+    so, now we need to create one more endpoint ("/verify-otp"), and it calls (verifyOtp mthd) this should check whether the otp exceeds verify_otp_expire_at
+    and then verifies otp with the otp (pasted by user) and once these conditions met it should set is_account_verified as true, verifyOtp to null and verifyOtpExpireAt as 0L
+
+
