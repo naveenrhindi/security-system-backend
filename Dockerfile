@@ -1,5 +1,5 @@
-# Step 1: Build Stage (Using Maven)
-FROM maven:3.8.4-openjdk-17 AS build
+# Step 1: Build Stage (Using Maven + Java 21)
+FROM maven:3.9.6-eclipse-temurin-21 AS build
 
 # Set the working directory
 WORKDIR /app
@@ -16,8 +16,8 @@ COPY src ./src
 # Build the application (creates the .jar file)
 RUN mvn clean package -DskipTests
 
-# Step 2: Run Stage (Using OpenJDK)
-FROM openjdk:17-jdk-slim
+# Step 2: Run Stage (Using OpenJDK 21)
+FROM eclipse-temurin:21-jdk
 
 # Set the working directory
 WORKDIR /app
