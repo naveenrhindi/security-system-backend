@@ -43,6 +43,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/login","/register","/send-reset-otp","/reset-password","/logout")
                         .permitAll()
@@ -60,10 +61,10 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public CorsFilter corsFilter() {
-        return new CorsFilter(corsConfigurationSource());
-    }
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        return new CorsFilter(corsConfigurationSource());
+//    }
 
     private CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config = new CorsConfiguration();
