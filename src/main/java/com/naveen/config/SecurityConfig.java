@@ -39,22 +39,40 @@ public class SecurityConfig {
     @Value("${frontend.url}")
     private String frontendUrl;
 
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//        httpSecurity.cors(Customizer.withDefaults())
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+//                .authorizeHttpRequests(req -> req
+//                        .requestMatchers("/login","/register","/send-reset-otp","/reset-password","/logout")
+//                        .permitAll()
+//                        .anyRequest().authenticated()
+//                )
+//                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                .logout(AbstractHttpConfigurer::disable)
+//                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+//                .exceptionHandling(ex->ex.authenticationEntryPoint(customAuthenticationEntryPoint));
+//        return httpSecurity.build();
+//    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity.cors(Customizer.withDefaults())
+        httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
-                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // only this is needed
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/login","/register","/send-reset-otp","/reset-password","/logout")
+                        .requestMatchers("/login", "/register", "/send-reset-otp", "/reset-password", "/logout")
                         .permitAll()
                         .anyRequest().authenticated()
                 )
-                .sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling(ex->ex.authenticationEntryPoint(customAuthenticationEntryPoint));
+                .exceptionHandling(ex -> ex.authenticationEntryPoint(customAuthenticationEntryPoint));
         return httpSecurity.build();
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder(){
