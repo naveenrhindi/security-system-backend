@@ -2,6 +2,7 @@ package com.naveen.config;
 
 import com.naveen.filter.JwtRequestFilter;
 import com.naveen.service.AppUserDetailsService;
+import jakarta.annotation.PostConstruct;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -103,6 +104,12 @@ public class SecurityConfig {
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(daoAuthenticationProvider);
     }
+
+    @PostConstruct
+    public void logFrontendUrl() {
+        System.out.println("Allowed frontend: " + frontendUrl);
+    }
+
 
 //    @Bean
 //    public AuthenticationProvider authenticationProvider() {
