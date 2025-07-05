@@ -74,15 +74,13 @@ public class SecurityConfig {
 //                        .anyRequest().authenticated()
 //                )
                 .authorizeHttpRequests(req -> req
-                                .requestMatchers("/**").permitAll()
-//                        .requestMatchers(
-////                                "/api/v1.0/register",
-////                                "/api/v1.0/login",
-////                                "/api/v1.0/send-reset-otp",
-////                                "/api/v1.0/reset-password",
-////                                "/api/v1.0/logout"
-//
-//                        ).permitAll()
+                        .requestMatchers(
+                                "/api/v1.0/register",
+                                "/api/v1.0/login",
+                                "/api/v1.0/send-reset-otp",
+                                "/api/v1.0/reset-password",
+                                "/api/v1.0/logout"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
