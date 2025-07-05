@@ -62,9 +62,25 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) // only this is needed
+//                .authorizeHttpRequests(req -> req
+//                        .requestMatchers(
+//                                "/login",
+//                                "/register",
+//                                "/send-reset-otp",
+//                                "/reset-password",
+//                                "/logout"
+//                        )
+//                        .permitAll()
+//                        .anyRequest().authenticated()
+//                )
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/login", "/register", "/send-reset-otp", "/reset-password", "/logout")
-                        .permitAll()
+                        .requestMatchers(
+                                "/api/v1.0/register",
+                                "/api/v1.0/login",
+                                "/api/v1.0/send-reset-otp",
+                                "/api/v1.0/reset-password",
+                                "/api/v1.0/logout"
+                        ).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -87,7 +103,8 @@ public class SecurityConfig {
 
     private CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of(frontendUrl));
+//        config.setAllowedOrigins(List.of(frontendUrl));
+        config.setAllowedOriginPatterns(List.of(frontendUrl));
         config.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS","PATCH"));
         config.setAllowedHeaders(List.of("Authorization","Content-Type"));
         config.setAllowCredentials(true);
